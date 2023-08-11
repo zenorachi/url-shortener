@@ -1,5 +1,5 @@
 .SILENT:
-.PHONY: proto build run stop
+.PHONY: proto build run stop rebuild
 
 PATH_TO_PROTO=./api/proto
 PROTO_OUT=./pkg/api
@@ -20,3 +20,6 @@ run: build
 
 stop:
 	docker-compose down
+
+rebuild: build
+	docker-compose up --remove-orphans --build
