@@ -1,7 +1,25 @@
 version: '3.9'
 
 services:
+  url-shortener:
+    build: ./
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    networks:
+      - devdzen
   redis:
     image: redis:latest
+    env_file:
+      - .env
     ports:
       - "6379:6379"
+    networks:
+      - devdzen
+
+networks:
+  devdzen:
+    driver: bridge

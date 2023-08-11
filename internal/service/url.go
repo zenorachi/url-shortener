@@ -48,7 +48,7 @@ func (u *Urls) Shorten(ctx context.Context, request *api.ShortenRequest) (*api.S
 	return &api.ShortenResponse{ShortedUrl: shortUrl}, nil
 }
 
-func (u *Urls) GetByShorted(ctx context.Context, request *api.ShortedRequest) (*api.ShortedResponse, error) {
+func (u *Urls) Redirect(ctx context.Context, request *api.ShortedRequest) (*api.ShortedResponse, error) {
 	url, err := u.urlsRepo.GetByShorted(ctx, request.ShortedUrl)
 	if err != nil {
 		if err != redis.Nil {

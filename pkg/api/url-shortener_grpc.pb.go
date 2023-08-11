@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	UrlShortener_Shorten_FullMethodName      = "/api.UrlShortener/Shorten"
-	UrlShortener_GetByShorted_FullMethodName = "/api.UrlShortener/GetByShorted"
+	UrlShortener_Shorten_FullMethodName  = "/api.UrlShortener/Shorten"
+	UrlShortener_Redirect_FullMethodName = "/api.UrlShortener/Redirect"
 )
 
 // UrlShortenerClient is the client API for UrlShortener service.
@@ -28,7 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UrlShortenerClient interface {
 	Shorten(ctx context.Context, in *ShortenRequest, opts ...grpc.CallOption) (*ShortenResponse, error)
-	GetByShorted(ctx context.Context, in *ShortedRequest, opts ...grpc.CallOption) (*ShortedResponse, error)
+	Redirect(ctx context.Context, in *ShortedRequest, opts ...grpc.CallOption) (*ShortedResponse, error)
 }
 
 type urlShortenerClient struct {
@@ -48,9 +48,9 @@ func (c *urlShortenerClient) Shorten(ctx context.Context, in *ShortenRequest, op
 	return out, nil
 }
 
-func (c *urlShortenerClient) GetByShorted(ctx context.Context, in *ShortedRequest, opts ...grpc.CallOption) (*ShortedResponse, error) {
+func (c *urlShortenerClient) Redirect(ctx context.Context, in *ShortedRequest, opts ...grpc.CallOption) (*ShortedResponse, error) {
 	out := new(ShortedResponse)
-	err := c.cc.Invoke(ctx, UrlShortener_GetByShorted_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, UrlShortener_Redirect_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (c *urlShortenerClient) GetByShorted(ctx context.Context, in *ShortedReques
 // for forward compatibility
 type UrlShortenerServer interface {
 	Shorten(context.Context, *ShortenRequest) (*ShortenResponse, error)
-	GetByShorted(context.Context, *ShortedRequest) (*ShortedResponse, error)
+	Redirect(context.Context, *ShortedRequest) (*ShortedResponse, error)
 	mustEmbedUnimplementedUrlShortenerServer()
 }
 
@@ -73,8 +73,8 @@ type UnimplementedUrlShortenerServer struct {
 func (UnimplementedUrlShortenerServer) Shorten(context.Context, *ShortenRequest) (*ShortenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Shorten not implemented")
 }
-func (UnimplementedUrlShortenerServer) GetByShorted(context.Context, *ShortedRequest) (*ShortedResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetByShorted not implemented")
+func (UnimplementedUrlShortenerServer) Redirect(context.Context, *ShortedRequest) (*ShortedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Redirect not implemented")
 }
 func (UnimplementedUrlShortenerServer) mustEmbedUnimplementedUrlShortenerServer() {}
 
@@ -107,20 +107,20 @@ func _UrlShortener_Shorten_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UrlShortener_GetByShorted_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UrlShortener_Redirect_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ShortedRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UrlShortenerServer).GetByShorted(ctx, in)
+		return srv.(UrlShortenerServer).Redirect(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UrlShortener_GetByShorted_FullMethodName,
+		FullMethod: UrlShortener_Redirect_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UrlShortenerServer).GetByShorted(ctx, req.(*ShortedRequest))
+		return srv.(UrlShortenerServer).Redirect(ctx, req.(*ShortedRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -137,8 +137,8 @@ var UrlShortener_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UrlShortener_Shorten_Handler,
 		},
 		{
-			MethodName: "GetByShorted",
-			Handler:    _UrlShortener_GetByShorted_Handler,
+			MethodName: "Redirect",
+			Handler:    _UrlShortener_Redirect_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
