@@ -6,8 +6,10 @@ import (
 	"github.com/zenorachi/url-shortener/pkg/api"
 )
 
+const urlLen = 10
+
 type ShortCodeGenerator interface {
-	GenerateCode() string
+	GenerateCode(len int) string
 }
 
 type UrlRepository interface {
@@ -28,7 +30,7 @@ func NewUrls(generator ShortCodeGenerator, repo UrlRepository) *Urls {
 }
 
 func (u *Urls) Shorten(ctx context.Context, request *api.ShortenRequest) (*api.ShortenResponse, error) {
-	shortUrl := u.generator.GenerateCode()
+	shortUrl := u.generator.GenerateCode(urlLen)
 	url := model.NewUrl(request.OriginalUrl, shortUrl)
 
 	if err := u.urlsRepo.Create(ctx, url); err != nil {

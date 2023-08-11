@@ -15,7 +15,7 @@ func NewUrls(client *redis.Client) *Urls {
 }
 
 func (u *Urls) Create(ctx context.Context, url model.URL) error {
-	_, err := u.client.Set(ctx, url.Original, url.Shortened, 0).Result() //todo ttl
+	_, err := u.client.Set(ctx, url.Shortened, url.Original, 0).Result() //todo ttl
 	if err != nil {
 		return err
 	}
