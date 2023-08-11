@@ -1,2 +1,2 @@
-# url-shortener
+# Url Shortener
 Simple url shortener service

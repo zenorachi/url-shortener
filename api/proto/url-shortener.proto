@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "github.com/zenorachi/url-shortener/api";
+
+package api;
+
+service UrlShortener {
+  rpc Shorten(ShortenRequest) returns (ShortenResponse) {}
+}
+
+message ShortenRequest {
+  string url = 1;
+}
+
+message ShortenResponse {
+  string url = 2;
+}
