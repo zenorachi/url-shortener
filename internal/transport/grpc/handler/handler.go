@@ -1,9 +1,13 @@
 package handler
 
-import "github.com/zenorachi/url-shortener/pkg/api"
+import (
+	"context"
+	"github.com/zenorachi/url-shortener/pkg/api"
+)
 
 type Url interface {
-	Shorten(url string)
+	Shorten(ctx context.Context, request *api.ShortenRequest) (*api.ShortenResponse, error)
+	GetByShorted(ctx context.Context, request *api.ShortedRequest) (*api.ShortedResponse, error)
 }
 
 type Handler struct {
@@ -15,4 +19,12 @@ func NewHandler(url Url) *Handler {
 	return &Handler{
 		url: url,
 	}
+}
+
+func (h *Handler) Shorten(ctx context.Context, request *api.ShortenRequest) (*api.ShortenResponse, error) {
+	return h.url.Shorten(ctx, request)
+}
+
+func (h *Handler) GetByShorted(ctx context.Context, request *api.ShortedRequest) (*api.ShortedResponse, error) {
+	return h.url.GetByShorted(ctx, request)
 }

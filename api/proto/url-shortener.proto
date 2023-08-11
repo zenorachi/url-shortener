@@ -6,12 +6,21 @@ package api;
 
 service UrlShortener {
   rpc Shorten(ShortenRequest) returns (ShortenResponse) {}
+  rpc GetByShorted(ShortedRequest) returns (ShortedResponse) {}
 }
 
 message ShortenRequest {
-  string url = 1;
+  string originalUrl = 1;
 }
 
 message ShortenResponse {
-  string url = 1;
+  string shortedUrl = 1;
+}
+
+message ShortedRequest {
+  string shortedUrl = 1;
+}
+
+message ShortedResponse {
+  string originalUrl = 1;
 }
