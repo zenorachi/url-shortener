@@ -13,5 +13,5 @@ message ShortenRequest {
 }
 
 message ShortenResponse {
-  string url = 2;
+  string url = 1;
 }
