@@ -2,20 +2,25 @@ package service
 
 import (
 	"context"
+	"errors"
+	"github.com/asaskevich/govalidator"
+	"github.com/redis/go-redis/v9"
 	"github.com/zenorachi/url-shortener/model"
 	"github.com/zenorachi/url-shortener/pkg/api"
 )
 
 const urlLen = 10
 
-type ShortCodeGenerator interface {
-	GenerateCode(len int) string
-}
+type (
+	ShortCodeGenerator interface {
+		GenerateCode(len int) string
+	}
 
-type UrlRepository interface {
-	Create(ctx context.Context, url model.URL) error
-	GetByShorted(ctx context.Context, shorted string) (string, error)
-}
+	UrlRepository interface {
+		Create(ctx context.Context, url model.URL) error
+		GetByShorted(ctx context.Context, shorted string) (string, error)
+	}
+)
 
 type Urls struct {
 	generator ShortCodeGenerator
@@ -30,6 +35,10 @@ func NewUrls(generator ShortCodeGenerator, repo UrlRepository) *Urls {
 }
 
 func (u *Urls) Shorten(ctx context.Context, request *api.ShortenRequest) (*api.ShortenResponse, error) {
+	if !govalidator.IsURL(request.OriginalUrl) {
+		return nil, errors.New("url is not valid")
+	}
+
 	shortUrl := u.generator.GenerateCode(urlLen)
 	url := model.NewUrl(request.OriginalUrl, shortUrl)
 
@@ -42,7 +51,11 @@ func (u *Urls) Shorten(ctx context.Context, request *api.ShortenRequest) (*api.S
 func (u *Urls) GetByShorted(ctx context.Context, request *api.ShortedRequest) (*api.ShortedResponse, error) {
 	url, err := u.urlsRepo.GetByShorted(ctx, request.ShortedUrl)
 	if err != nil {
-		return nil, err
+		if err != redis.Nil {
+			return nil, err
+		}
+		return nil, errors.New("url not found")
 	}
+
 	return &api.ShortedResponse{OriginalUrl: url}, nil
 }
