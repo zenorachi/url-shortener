@@ -1,5 +1,6 @@
 .SILENT:
 .PHONY: proto build run stop rebuild
+.DEFAULT_GOAL: run
 
 PATH_TO_PROTO=./api/proto
 PROTO_OUT=./pkg/api
@@ -23,3 +24,9 @@ stop:
 
 rebuild: build
 	docker-compose up --remove-orphans --build
+
+lint:
+	golangci-lint run
+
+clean:
+	rm -rf .bin/

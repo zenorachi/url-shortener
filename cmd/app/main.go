@@ -13,13 +13,16 @@ import (
 )
 
 const (
-	dir  = "./configs"
-	file = "main"
+	configDir  = "./configs"
+	configFile = "main"
+	envFile    = ".env"
 )
 
 func main() {
-	config.InitENV(".env")
-	cfg, err := config.New(dir, file)
+	if err := config.InitENV(envFile); err != nil {
+		slog.Error(".env file not found", err)
+	}
+	cfg, err := config.New(configDir, configFile)
 	if err != nil {
 		slog.Error("config", err)
 	}
