@@ -1,8 +1,7 @@
-grpcServer:
+server:
   network: tcp
-  port: 9090
-
-gatewayServer:
-  network: tcp
-  host: 0.0.0.0
-  port: 8080
+  grpc:
+    port: 9090
+  gateway:
+    host: 0.0.0.0
+    port: 8080

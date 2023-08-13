@@ -61,7 +61,7 @@ func Run() error {
 	slog.Info("gateway server started...")
 	go func() {
 		err = gatewayServer.
-			ListenAndServer(cfg.GatewayServer.Network, cfg.GatewayServer.Host, cfg.GatewayServer.Port)
+			ListenAndServer(cfg.Server.Network, cfg.Server.Gateway.Host, cfg.Server.Gateway.Port)
 		if err != nil {
 			log.Fatalln("error starting gateway server", err)
 		}
@@ -70,7 +70,7 @@ func Run() error {
 	slog.Info("grpc server started...")
 
 	go func() {
-		if err = grpcServer.ListenAndServe(cfg.GRPCServer.Network, cfg.GRPCServer.Port); err != nil {
+		if err = grpcServer.ListenAndServe(cfg.Server.Network, cfg.Server.GRPC.Port); err != nil {
 			log.Fatalln("error starting grpc server", err)
 		}
 	}()

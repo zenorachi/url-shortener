@@ -8,15 +8,17 @@ import (
 )
 
 type Config struct {
-	GRPCServer struct {
+	Server struct {
 		Network string
-		Port    string
-	}
 
-	GatewayServer struct {
-		Network string
-		Host    string
-		Port    string
+		GRPC struct {
+			Port string
+		}
+
+		Gateway struct {
+			Host string
+			Port string
+		}
 	}
 
 	Redis redis.ClientConfig
