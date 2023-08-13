@@ -8,8 +8,14 @@ import (
 )
 
 type Config struct {
-	Server struct {
+	GRPCServer struct {
 		Network string
+		Port    string
+	}
+
+	GatewayServer struct {
+		Network string
+		Host    string
 		Port    string
 	}
 

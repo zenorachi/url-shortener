@@ -7,7 +7,7 @@ import (
 
 type Url interface {
 	Shorten(ctx context.Context, request *api.ShortenRequest) (*api.ShortenResponse, error)
-	Redirect(ctx context.Context, request *api.ShortedRequest) (*api.ShortedResponse, error)
+	Redirect(ctx context.Context, request *api.RedirectRequest) (*api.RedirectResponse, error)
 }
 
 type Handler struct {
@@ -25,6 +25,6 @@ func (h *Handler) Shorten(ctx context.Context, request *api.ShortenRequest) (*ap
 	return h.url.Shorten(ctx, request)
 }
 
-func (h *Handler) Redirect(ctx context.Context, request *api.ShortedRequest) (*api.ShortedResponse, error) {
+func (h *Handler) Redirect(ctx context.Context, request *api.RedirectRequest) (*api.RedirectResponse, error) {
 	return h.url.Redirect(ctx, request)
 }

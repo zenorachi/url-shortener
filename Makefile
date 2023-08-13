@@ -11,6 +11,8 @@ proto:
 	--go_opt=paths=source_relative \
 	--go-grpc_out=$(PROTO_OUT) \
 	--go-grpc_opt=paths=source_relative \
+	--grpc-gateway_out=$(PROTO_OUT) \
+	--grpc-gateway_opt=paths=source_relative \
 	--proto_path=$(PATH_TO_PROTO) $(PATH_TO_PROTO)/*.proto
 
 build:
@@ -27,6 +29,11 @@ rebuild: build
 
 lint:
 	golangci-lint run
+
+swag:
+	protoc \
+	--openapiv2_out ./docs \
+	--proto_path=$(PATH_TO_PROTO) $(PATH_TO_PROTO)/*.proto
 
 clean:
 	rm -rf .bin/
