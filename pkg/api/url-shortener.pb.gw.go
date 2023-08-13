@@ -66,15 +66,24 @@ func local_request_UrlShortener_Shorten_0(ctx context.Context, marshaler runtime
 }
 
 func request_UrlShortener_Redirect_0(ctx context.Context, marshaler runtime.Marshaler, client UrlShortenerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ShortedRequest
+	var protoReq RedirectRequest
 	var metadata runtime.ServerMetadata
 
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["shortedUrl"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "shortedUrl")
 	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.ShortedUrl, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "shortedUrl", err)
 	}
 
 	msg, err := client.Redirect(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -83,15 +92,24 @@ func request_UrlShortener_Redirect_0(ctx context.Context, marshaler runtime.Mars
 }
 
 func local_request_UrlShortener_Redirect_0(ctx context.Context, marshaler runtime.Marshaler, server UrlShortenerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ShortedRequest
+	var protoReq RedirectRequest
 	var metadata runtime.ServerMetadata
 
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["shortedUrl"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "shortedUrl")
 	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.ShortedUrl, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "shortedUrl", err)
 	}
 
 	msg, err := server.Redirect(ctx, &protoReq)
@@ -130,7 +148,7 @@ func RegisterUrlShortenerHandlerServer(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortener_Redirect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UrlShortener_Redirect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -138,7 +156,7 @@ func RegisterUrlShortenerHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.UrlShortener/Redirect", runtime.WithHTTPPathPattern("/redirect"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.UrlShortener/Redirect", runtime.WithHTTPPathPattern("/redirect/{shortedUrl}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -218,13 +236,13 @@ func RegisterUrlShortenerHandlerClient(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
-	mux.Handle("POST", pattern_UrlShortener_Redirect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UrlShortener_Redirect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.UrlShortener/Redirect", runtime.WithHTTPPathPattern("/redirect"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.UrlShortener/Redirect", runtime.WithHTTPPathPattern("/redirect/{shortedUrl}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -246,7 +264,7 @@ func RegisterUrlShortenerHandlerClient(ctx context.Context, mux *runtime.ServeMu
 var (
 	pattern_UrlShortener_Shorten_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"shorten"}, ""))
 
-	pattern_UrlShortener_Redirect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"redirect"}, ""))
+	pattern_UrlShortener_Redirect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"redirect", "shortedUrl"}, ""))
 )
 
 var (

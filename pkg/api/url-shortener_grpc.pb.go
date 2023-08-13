@@ -28,7 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UrlShortenerClient interface {
 	Shorten(ctx context.Context, in *ShortenRequest, opts ...grpc.CallOption) (*ShortenResponse, error)
-	Redirect(ctx context.Context, in *ShortedRequest, opts ...grpc.CallOption) (*ShortedResponse, error)
+	Redirect(ctx context.Context, in *RedirectRequest, opts ...grpc.CallOption) (*RedirectResponse, error)
 }
 
 type urlShortenerClient struct {
@@ -48,8 +48,8 @@ func (c *urlShortenerClient) Shorten(ctx context.Context, in *ShortenRequest, op
 	return out, nil
 }
 
-func (c *urlShortenerClient) Redirect(ctx context.Context, in *ShortedRequest, opts ...grpc.CallOption) (*ShortedResponse, error) {
-	out := new(ShortedResponse)
+func (c *urlShortenerClient) Redirect(ctx context.Context, in *RedirectRequest, opts ...grpc.CallOption) (*RedirectResponse, error) {
+	out := new(RedirectResponse)
 	err := c.cc.Invoke(ctx, UrlShortener_Redirect_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func (c *urlShortenerClient) Redirect(ctx context.Context, in *ShortedRequest, o
 // for forward compatibility
 type UrlShortenerServer interface {
 	Shorten(context.Context, *ShortenRequest) (*ShortenResponse, error)
-	Redirect(context.Context, *ShortedRequest) (*ShortedResponse, error)
+	Redirect(context.Context, *RedirectRequest) (*RedirectResponse, error)
 	mustEmbedUnimplementedUrlShortenerServer()
 }
 
@@ -73,7 +73,7 @@ type UnimplementedUrlShortenerServer struct {
 func (UnimplementedUrlShortenerServer) Shorten(context.Context, *ShortenRequest) (*ShortenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Shorten not implemented")
 }
-func (UnimplementedUrlShortenerServer) Redirect(context.Context, *ShortedRequest) (*ShortedResponse, error) {
+func (UnimplementedUrlShortenerServer) Redirect(context.Context, *RedirectRequest) (*RedirectResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Redirect not implemented")
 }
 func (UnimplementedUrlShortenerServer) mustEmbedUnimplementedUrlShortenerServer() {}
@@ -108,7 +108,7 @@ func _UrlShortener_Shorten_Handler(srv interface{}, ctx context.Context, dec fun
 }
 
 func _UrlShortener_Redirect_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ShortedRequest)
+	in := new(RedirectRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func _UrlShortener_Redirect_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: UrlShortener_Redirect_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UrlShortenerServer).Redirect(ctx, req.(*ShortedRequest))
+		return srv.(UrlShortenerServer).Redirect(ctx, req.(*RedirectRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

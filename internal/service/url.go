@@ -48,7 +48,7 @@ func (u *Urls) Shorten(ctx context.Context, request *api.ShortenRequest) (*api.S
 	return &api.ShortenResponse{ShortedUrl: shortUrl}, nil
 }
 
-func (u *Urls) Redirect(ctx context.Context, request *api.ShortedRequest) (*api.ShortedResponse, error) {
+func (u *Urls) Redirect(ctx context.Context, request *api.RedirectRequest) (*api.RedirectResponse, error) {
 	url, err := u.urlsRepo.GetByShorted(ctx, request.ShortedUrl)
 	if err != nil {
 		if err != redis.Nil {
@@ -57,5 +57,5 @@ func (u *Urls) Redirect(ctx context.Context, request *api.ShortedRequest) (*api.
 		return nil, errors.New("url not found")
 	}
 
-	return &api.ShortedResponse{OriginalUrl: url}, nil
+	return &api.RedirectResponse{OriginalUrl: url}, nil
 }
