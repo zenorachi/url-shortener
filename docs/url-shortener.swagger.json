@@ -1,146 +1,316 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "url-shortener.proto",
-    "version": "version not set"
+    "description": "zenorachi's ImageBox server.",
+    "title": "ImageBox API",
+    "contact": {},
+    "version": "1.0"
   },
-  "tags": [
-    {
-      "name": "UrlShortener"
-    }
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "host": "localhost:8080",
+  "basePath": "/",
   "paths": {
-    "/redirect": {
-      "post": {
-        "operationId": "UrlShortener_Redirect",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/apiShortedResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/apiShortedRequest"
-            }
-          }
+    "/auth/refresh": {
+      "get": {
+        "description": "refresh returns a new JWT token",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
         ],
         "tags": [
-          "UrlShortener"
-        ]
+          "auth"
+        ],
+        "summary": "Refresh JWT",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {}
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {}
+          }
+        }
       }
     },
-    "/shorten": {
+    "/auth/sign-in": {
       "post": {
-        "operationId": "UrlShortener_Shorten",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/apiShortenResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
+        "description": "signIn returns JWT token",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "auth"
+        ],
+        "summary": "User authentication",
         "parameters": [
           {
-            "name": "body",
+            "description": "sign in info",
+            "name": "input",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiShortenRequest"
+              "$ref": "#/definitions/models.SignInInput"
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {}
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/auth/sign-up": {
+      "post": {
+        "description": "signUp registers a new user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "tags": [
-          "UrlShortener"
-        ]
+          "auth"
+        ],
+        "summary": "User registration",
+        "parameters": [
+          {
+            "description": "sign up info",
+            "name": "input",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.SignUpInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {}
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/storage/get": {
+      "get": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
+        "description": "get list of files for one user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "storage"
+        ],
+        "summary": "Get list of files",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "\"Bearer \"",
+            "description": "Bearer \u003ctoken\u003e",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/models.File"
+              }
+            }
+          },
+          "204": {
+            "description": "No Content",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/storage/upload": {
+      "post": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
+        "description": "uploading a file to the minio storage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "storage"
+        ],
+        "summary": "Uploading a file to the storage",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "\"Bearer \"",
+            "description": "Bearer \u003ctoken\u003e",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          },
+          {
+            "type": "file",
+            "description": "File to upload",
+            "name": "file",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {}
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
       }
     }
   },
   "definitions": {
-    "apiShortedRequest": {
+    "models.File": {
       "type": "object",
       "properties": {
-        "shortedUrl": {
-          "type": "string"
-        }
-      }
-    },
-    "apiShortedResponse": {
-      "type": "object",
-      "properties": {
-        "originalUrl": {
-          "type": "string"
-        }
-      }
-    },
-    "apiShortenRequest": {
-      "type": "object",
-      "properties": {
-        "originalUrl": {
-          "type": "string"
-        }
-      }
-    },
-    "apiShortenResponse": {
-      "type": "object",
-      "properties": {
-        "shortedUrl": {
-          "type": "string"
-        }
-      }
-    },
-    "protobufAny": {
-      "type": "object",
-      "properties": {
-        "@type": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": {}
-    },
-    "rpcStatus": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
+        "id": {
+          "type": "integer"
         },
-        "message": {
+        "name": {
           "type": "string"
         },
-        "details": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/protobufAny"
-          }
+        "size": {
+          "type": "integer"
+        },
+        "uploadedAt": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "userID": {
+          "type": "integer"
         }
       }
+    },
+    "models.SignInInput": {
+      "type": "object",
+      "required": [
+        "login",
+        "password"
+      ],
+      "properties": {
+        "login": {
+          "type": "string",
+          "minLength": 6
+        },
+        "password": {
+          "type": "string",
+          "minLength": 6
+        }
+      }
+    },
+    "models.SignUpInput": {
+      "type": "object",
+      "required": [
+        "email",
+        "login",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "login": {
+          "type": "string",
+          "minLength": 6
+        },
+        "password": {
+          "type": "string",
+          "minLength": 6
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "UsersAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
   }
 }

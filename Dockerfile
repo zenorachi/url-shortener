@@ -9,4 +9,6 @@ COPY ./.bin/app /root/.bin/app
 COPY ./.env /root/
 COPY ./configs/main.yml /root/configs/main.yml
 
+COPY ./docs /root/docs
+
 CMD ["./.bin/app"]

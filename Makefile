@@ -31,6 +31,7 @@ lint:
 	golangci-lint run
 
 swag:
+	mkdir -p docs
 	protoc \
 	--openapiv2_out ./docs \
 	--proto_path=$(PATH_TO_PROTO) $(PATH_TO_PROTO)/*.proto
