@@ -61,7 +61,7 @@ func Run() error {
 	slog.Info("gateway server started...")
 	go func() {
 		err = gatewayServer.
-			ListenAndServer(cfg.Server.Network, cfg.Server.Gateway.Host, cfg.Server.Gateway.Port)
+			ListenAndServe(cfg.Server.Network, cfg.Server.Gateway.Host, cfg.Server.Gateway.Port)
 		if err != nil {
 			log.Fatalln("error starting gateway server", err)
 		}

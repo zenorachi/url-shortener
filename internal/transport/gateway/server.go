@@ -25,7 +25,7 @@ func NewServer(grpcHandler *handler.Handler, ctx context.Context) *Server {
 	}
 }
 
-func (s *Server) ListenAndServer(network, host, port string) error {
+func (s *Server) ListenAndServe(network, host, port string) error {
 	addr := fmt.Sprintf("%s:%s", host, port)
 
 	lis, err := net.Listen(network, addr)
@@ -42,9 +42,9 @@ func (s *Server) ListenAndServer(network, host, port string) error {
 	mux.Handle("/", s.grpcMux)
 
 	prefix := "/docs/"
-
-	fileServer := httpSwagger.Handler(httpSwagger.URL("/docs/url-shortener.swagger.json"))
-
+	fileServer := httpSwagger.Handler(
+		httpSwagger.URL("/docs/url-shortener.swagger.json"),
+	)
 	mux.Handle(prefix, http.StripPrefix(prefix, fileServer))
 
 	if err = http.Serve(lis, mux); err != nil {
