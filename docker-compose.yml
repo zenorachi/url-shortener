@@ -4,6 +4,7 @@ services:
   app:
     build: ./
     ports:
+      - "9090:9090"
       - "8080:8080"
     env_file:
       - .env
@@ -11,14 +12,20 @@ services:
       - redis
     networks:
       - devdzen
+
   redis:
     image: redis:latest
     env_file:
       - .env
     ports:
       - "6379:6379"
+    volumes:
+      - redis-data:/data
     networks:
       - devdzen
+
+volumes:
+  redis-data:
 
 networks:
   devdzen:

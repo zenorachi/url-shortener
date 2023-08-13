@@ -1,3 +1,8 @@
-server:
+grpcServer:
   network: tcp
+  port: 9090
+
+gatewayServer:
+  network: tcp
+  host: localhost
   port: 8080
