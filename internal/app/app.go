@@ -11,6 +11,7 @@ import (
 	_ "github.com/zenorachi/url-shortener/pkg/api"
 	"github.com/zenorachi/url-shortener/pkg/base62"
 	"github.com/zenorachi/url-shortener/pkg/db/redis"
+	"github.com/zenorachi/url-shortener/pkg/logger"
 	"log"
 	"log/slog"
 	"os"
@@ -26,19 +27,19 @@ const (
 
 func Run() error {
 	if err := config.InitENV(envFile); err != nil {
-		slog.Error(".env file")
+		logger.ErrorService("config", err)
 		return err
 	}
 
 	cfg, err := config.New(configDir, configFile)
 	if err != nil {
-		slog.Error("config")
+		logger.ErrorService("config", err)
 		return err
 	}
 
 	client, err := redis.New(cfg.Redis)
 	if err != nil {
-		slog.Error("redis client")
+		logger.ErrorService("redis", err)
 		return err
 	}
 

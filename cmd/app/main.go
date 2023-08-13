@@ -6,14 +6,8 @@ import (
 	"log/slog"
 )
 
-const (
-	configDir  = "./configs"
-	configFile = "main"
-	envFile    = ".env"
-)
-
 func main() {
 	if err := app.Run(); err != nil {
-		slog.Error("error starting server", err)
+		slog.Error("unexpected error", "err", err)
 	}
 }

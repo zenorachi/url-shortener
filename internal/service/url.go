@@ -7,6 +7,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	"github.com/zenorachi/url-shortener/model"
 	"github.com/zenorachi/url-shortener/pkg/api"
+	"github.com/zenorachi/url-shortener/pkg/logger"
 )
 
 const urlLen = 10
@@ -43,8 +44,11 @@ func (u *Urls) Shorten(ctx context.Context, request *api.ShortenRequest) (*api.S
 	url := model.NewUrl(request.OriginalUrl, shortUrl)
 
 	if err := u.urlsRepo.Create(ctx, url); err != nil {
+		logger.ErrorService("shorten", err)
 		return nil, err
 	}
+
+	logger.InfoService("shorten", "url successfully shortened")
 	return &api.ShortenResponse{ShortedUrl: shortUrl}, nil
 }
 
@@ -52,10 +56,12 @@ func (u *Urls) Redirect(ctx context.Context, request *api.RedirectRequest) (*api
 	url, err := u.urlsRepo.GetByShorted(ctx, request.ShortedUrl)
 	if err != nil {
 		if err != redis.Nil {
+			logger.ErrorService("redirect", err)
 			return nil, err
 		}
 		return nil, errors.New("url not found")
 	}
 
+	logger.InfoService("redirect", "success")
 	return &api.RedirectResponse{OriginalUrl: url}, nil
 }
