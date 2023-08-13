@@ -1,7 +1,6 @@
 package grpc
 
 import (
-	"github.com/zenorachi/url-shortener/internal/config"
 	"github.com/zenorachi/url-shortener/pkg/api"
 	"google.golang.org/grpc"
 	"net"
@@ -19,8 +18,8 @@ func NewServer(handler api.UrlShortenerServer) *Server {
 	}
 }
 
-func (s *Server) ListenAndServe(cfg *config.Config) error {
-	lis, err := net.Listen(cfg.Server.Network, ":"+cfg.Server.Port)
+func (s *Server) ListenAndServe(network, port string) error {
+	lis, err := net.Listen(network, ":"+port)
 	if err != nil {
 		return err
 	}
