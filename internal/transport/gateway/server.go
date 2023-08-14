@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	httpSwagger "github.com/swaggo/http-swagger/v2"
 	"github.com/zenorachi/url-shortener/internal/transport/grpc/handler"
 	"github.com/zenorachi/url-shortener/pkg/api"
 	"net"
@@ -40,12 +39,6 @@ func (s *Server) ListenAndServe(network, host, port string) error {
 
 	mux := http.NewServeMux()
 	mux.Handle("/", s.grpcMux)
-
-	prefix := "/docs/"
-	fileServer := httpSwagger.Handler(
-		httpSwagger.URL("/docs/url-shortener.swagger.json"),
-	)
-	mux.Handle(prefix, http.StripPrefix(prefix, fileServer))
 
 	if err = http.Serve(lis, mux); err != nil {
 		return err

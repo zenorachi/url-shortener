@@ -5,6 +5,8 @@
 PATH_TO_PROTO=./api/proto
 PROTO_OUT=./pkg/api
 
+COVER_FILE=cover.out
+
 proto:
 	protoc \
 	--go_out=$(PROTO_OUT) \
@@ -26,6 +28,13 @@ stop:
 
 rebuild: build
 	docker-compose up --remove-orphans --build
+
+test:
+	go test -coverprofile=$(COVER_FILE) -v ./...
+	make --silent test-coverage
+
+test-coverage:
+	go tool cover -func=cover.out | grep "total"
 
 lint:
 	golangci-lint run
