@@ -3,7 +3,7 @@ Simple url shortener service
 
 #### Technologies used:
 * [Golang](https://go.dev)
-* [gRPC](https://grpc.io/) 
+* [gRPC Gateway](https://grpc-ecosystem.github.io/grpc-gateway/) 
 * [Redis](https://redis.io/)
 * [Swagger UI](https://swagger.io/tools/swagger-ui/)
 ---
