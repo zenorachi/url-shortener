@@ -5,7 +5,7 @@ Simple url shortener service
 * [Golang](https://go.dev)
 * [gRPC Gateway](https://grpc-ecosystem.github.io/grpc-gateway/) 
 * [Redis](https://redis.io/)
-* [Swagger UI](https://swagger.io/tools/swagger-ui/)
+* [Swagger](https://swagger.io)
 ---
 
 ## Getting started
