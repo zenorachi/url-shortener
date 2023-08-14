@@ -15,3 +15,8 @@ run:
 
 golint:
   min-confidence: 0.5
+#
+#exclude-rules:
+#  - path: (tests/)
+#    linters:
+#      - bodyclose

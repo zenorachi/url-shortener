@@ -23,10 +23,8 @@ export REDIS_PORT=
 export REDIS_PASSWORD=
 export REDIS_INDEX=
 ```
-> **Note:** if you build the project using Docker, setup *DB_HOST=db* (as the container name)
+> **Note:** if you build the project using Docker, setup *DB_HOST=redis* (as the container name)
 3. Compile and run the project:
 ```shell
 make
 ```
-
-[//]: # (4. Go to `http://localhost:8080/docs/index.html` and test the ImageBox API.)
