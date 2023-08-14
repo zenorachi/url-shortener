@@ -2,6 +2,12 @@ package app
 
 import (
 	"context"
+	"log"
+	"log/slog"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/zenorachi/url-shortener/internal/config"
 	"github.com/zenorachi/url-shortener/internal/repository"
 	"github.com/zenorachi/url-shortener/internal/service"
@@ -12,11 +18,6 @@ import (
 	"github.com/zenorachi/url-shortener/pkg/base62"
 	"github.com/zenorachi/url-shortener/pkg/db/redis"
 	"github.com/zenorachi/url-shortener/pkg/logger"
-	"log"
-	"log/slog"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
 const (

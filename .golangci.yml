@@ -9,6 +9,34 @@ linters:
     - ineffassign
     - errcheck
     - goconst
+    - goheader
+    - goimports
+    - gomodguard
+    - goprintffuncname
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - nakedret
+    - nestif
+    - rowserrcheck
+    - sqlclosecheck
+    - staticcheck
+    - typecheck
+    - unconvert
+    - unused
+    - whitespace
+    - durationcheck
+    - forbidigo
+    - forcetypeassert
+    - importas
+    - nilerr
+    - predeclared
+    - thelper
+    - tparallel
+    - wastedassign
+    - promlinter
+    - bodyclose
 
 run:
   timeout: 1m
@@ -21,3 +49,6 @@ issues:
     - path: (_test\.go|tests)
       linters:
         - dupl
+    - path: (tests/mocks/)
+      linters:
+        - forcetypeassert

@@ -18,9 +18,9 @@ func NewGenerator() *Generator {
 	return &Generator{}
 }
 
-func (g *Generator) GenerateCode(len int) string {
-	shortCode := make([]byte, len)
-	for i := 0; i < len; i++ {
+func (g *Generator) GenerateCode(length int) string {
+	shortCode := make([]byte, length)
+	for i := 0; i < length; i++ {
 		shortCode[i] = base62Chars[random.Intn(base62Base)]
 	}
 	return string(shortCode)

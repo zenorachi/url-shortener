@@ -2,6 +2,7 @@ package mocks
 
 import (
 	"context"
+
 	"github.com/stretchr/testify/mock"
 	"github.com/zenorachi/url-shortener/pkg/api"
 )

@@ -1,9 +1,10 @@
 package grpc
 
 import (
+	"net"
+
 	"github.com/zenorachi/url-shortener/pkg/api"
 	"google.golang.org/grpc"
-	"net"
 )
 
 type Server struct {

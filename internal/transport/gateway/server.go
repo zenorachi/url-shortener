@@ -3,11 +3,12 @@ package gateway
 import (
 	"context"
 	"fmt"
+	"net"
+	"net/http"
+
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/zenorachi/url-shortener/internal/transport/grpc/handler"
 	"github.com/zenorachi/url-shortener/pkg/api"
-	"net"
-	"net/http"
 )
 
 type Server struct {

@@ -1,9 +1,10 @@
 package main
 
 import (
+	"log/slog"
+
 	"github.com/zenorachi/url-shortener/internal/app"
 	_ "github.com/zenorachi/url-shortener/pkg/api"
-	"log/slog"
 )
 
 func main() {

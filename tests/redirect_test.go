@@ -2,6 +2,9 @@ package tests
 
 import (
 	"context"
+	"net"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -9,8 +12,6 @@ import (
 	"github.com/zenorachi/url-shortener/tests/mocks"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"net"
-	"testing"
 )
 
 func TestRedirectMethod(t *testing.T) {

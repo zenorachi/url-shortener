@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+
 	"github.com/asaskevich/govalidator"
 	"github.com/redis/go-redis/v9"
 	"github.com/zenorachi/url-shortener/model"
@@ -14,7 +15,7 @@ const urlLen = 10
 
 type (
 	ShortCodeGenerator interface {
-		GenerateCode(len int) string
+		GenerateCode(length int) string
 	}
 
 	UrlRepository interface {

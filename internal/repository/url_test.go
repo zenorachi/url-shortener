@@ -3,10 +3,11 @@ package repository
 import (
 	"context"
 	"errors"
+	"testing"
+
 	"github.com/go-redis/redismock/v9"
 	"github.com/stretchr/testify/assert"
 	"github.com/zenorachi/url-shortener/model"
-	"testing"
 )
 
 func TestUrls_Create(t *testing.T) {
