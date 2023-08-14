@@ -15,8 +15,9 @@ run:
 
 golint:
   min-confidence: 0.5
-#
-#exclude-rules:
-#  - path: (tests/)
-#    linters:
-#      - bodyclose
+
+issues:
+  exclude-rules:
+    - path: (_test\.go|tests)
+      linters:
+        - dupl
