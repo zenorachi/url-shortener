@@ -4,6 +4,7 @@
 
 # Files
 .env
+*.out
 
 # Binary
 app

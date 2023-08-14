@@ -46,4 +46,4 @@ swag:
 	--proto_path=$(PATH_TO_PROTO) $(PATH_TO_PROTO)/*.proto
 
 clean:
-	rm -rf .bin/
+	rm -rf .bin/ $(COVER_FILE)
