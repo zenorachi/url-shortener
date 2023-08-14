@@ -1,0 +1,10 @@
+# Directories
+.idea
+.bin
+
+# Files
+.env
+*.out
+
+# Binary
+app

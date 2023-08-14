@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+option go_package = "github.com/zenorachi/url-shortener/api";
+
+import "google/api/annotations.proto";
+
+package api;
+
+service UrlShortener {
+  rpc Shorten(ShortenRequest) returns (ShortenResponse) {
+    option (google.api.http) = {
+      post: "/shorten"
+      body: "*"
+    };
+  }
+
+  rpc Redirect(RedirectRequest) returns (RedirectResponse) {
+    option (google.api.http) = {
+      get: "/redirect/{shortedUrl}"
+    };
+  }
+}
+
+message ShortenRequest {
+  string originalUrl = 1;
+}
+
+message ShortenResponse {
+  string shortedUrl = 1;
+}
+
+message RedirectRequest {
+  string shortedUrl = 1;
+}
+
+message RedirectResponse {
+  string originalUrl = 1;
+}
