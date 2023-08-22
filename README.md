@@ -1,5 +1,5 @@
 # Url Shortener
-Simple url shortener service.
+Simple url shortener service written in Golang.
 
 #### Technologies used:
 * [Golang](https://go.dev)
