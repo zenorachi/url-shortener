@@ -1,6 +1,6 @@
 .SILENT:
 .PHONY: proto build run stop rebuild
-.DEFAULT_GOAL: run
+.DEFAULT_GOAL = run
 
 PATH_TO_PROTO=./api/proto
 PROTO_OUT=./pkg/api
